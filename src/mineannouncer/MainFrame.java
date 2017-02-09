@@ -4,6 +4,9 @@
  */
 package mineannouncer;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author dirbaio
@@ -11,10 +14,21 @@ package mineannouncer;
 public class MainFrame extends javax.swing.JFrame
 {
     AnnouncerThread t;
+    String server;
+    String motd;
     
-    public MainFrame()
+    public MainFrame(String motd, String server)
     {
         initComponents();
+        this.server = server;
+        this.motd = motd;
+        
+        if (server != ""){
+            jTextField2.setText(server);
+        }
+        if (motd != ""){
+            jTextField1.setText(motd);
+        }
     }
 
     public void errorOccured(String error)
@@ -140,6 +154,44 @@ public class MainFrame extends javax.swing.JFrame
      */
     public static void main(String args[])
     {
+        final String motd;
+        final String server;
+        
+        final boolean terminal = true;
+                
+        if (args.length == 2){
+            motd = args[0]; //=="one"
+            server = args[1]; //=="two"
+            System.out.println("Server: " + server);
+            System.out.println("MOTD: "   + motd);
+        } else {
+            motd   = "\u00A74Cubecrafting \u00A76in \u00A72Survival"; //=="one"
+            server = "25565"; //=="two"
+        }
+        
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+            System.out.println("Shutdown.");
+            }
+        });
+        
+        if(terminal){
+            AnnouncerThread t2 = new AnnouncerThread("[MOTD]"+motd+"[/MOTD][AD]"+server+"[/AD]", null);
+            t2.start();
+            System.out.println("Up and running.");
+            while(!t2.isInterrupted()){
+ 
+//                try
+//                {
+//                    Thread.sleep(2000);
+//                }
+//                catch (InterruptedException ex)
+//                {
+//                }
+            }
+            
+            return;
+        }
         /*
          * Set the Nimbus look and feel
          */
@@ -184,9 +236,10 @@ public class MainFrame extends javax.swing.JFrame
 
             public void run()
             {
-                new MainFrame().setVisible(true);
+                new MainFrame(motd, server).setVisible(true);
             }
         });
+        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

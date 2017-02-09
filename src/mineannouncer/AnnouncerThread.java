@@ -1,5 +1,6 @@
 package mineannouncer;
 
+import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.util.logging.*;
 
@@ -11,7 +12,7 @@ public class AnnouncerThread extends Thread
     byte[] buf;
     MainFrame mf;
     
-    public AnnouncerThread(String data, MainFrame mf)
+    public AnnouncerThread(String data, MainFrame mf) 
     {
         this.data = data;
         this.buf = data.getBytes();
